@@ -1,0 +1,20 @@
+{
+	"userList":[
+	   {
+		  "id":"1",
+            "userName":"Raju",
+            "emailId":"smita@gmail.com",
+            "password":"Raju@123",
+            "status":"1",
+            "creationDate":"2019-02-12"
+       },
+       {
+            "id":"2",
+            "userName":"Himu",
+            "emailId":"Himu@gmail.com",
+            "password":"Himu@123",
+            "status":"1",
+            "creationDate":"2010-03-22"
+       }
+    ]
+} 

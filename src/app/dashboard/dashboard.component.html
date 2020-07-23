@@ -1,0 +1,33 @@
+<!-- <div class="toolbar" role="banner">
+    <span>Welcome</span>
+      <div class="spacer"></div>
+  </div> -->
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#">Home</a>
+                </li>
+                <li><a routerLink= "/ngEvent">ngEvents</a></li>
+                <li><a routerLink = "/AllEvents">AllEvents</a></li>
+                <li><a routerLink= "/createEvent">CreateEvent</a></li>
+                <li><a routerLink = "/CreateSession">CreateSession</a></li>
+                
+                <li><a routerLink= "/Event">Events</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="wel">Welcome {{userName}}</li>
+                 <!-- <li><a routerLink = "/register"><span class="glyphicon glyphicon-user"></span>Register</a></li> -->
+                <li><a href="#"><span class="glyphicon glyphicon-log-in" (click)="LogOut()"></span></a></li>
+            </ul>
+        </div>
+   </nav>
+
+<router-outlet></router-outlet>
+
+
+  
+      

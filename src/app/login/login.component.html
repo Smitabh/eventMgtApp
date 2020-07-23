@@ -1,0 +1,45 @@
+<div class="container toplg">
+    <form name="form" class="form-horizontal col-md-offset-3 center col-md-6 " 
+    (ngSubmit) ="chk.form.valid && Login()" #chk="ngForm" novalidate><!-- [mustMatch]="['userName', 'password']"-->
+        
+        <div class="panel panel-default">
+			<div class="panel-heading col-md-12">
+                <strong> Login </strong>
+				<label class="label label-warning pull-right" *ngIf="invalidLogin">{{errMsg}}</label>
+			</div>
+			<div class="panel-body">
+                <div class="row">&nbsp;<BR></div>
+					<div class="form-group form-group-sm">
+						<label for="userName" class="col-md-4 control-label" style="font-size:15px;">User Name *</label>
+						<div class="col-md-8">
+                            <input type="text" name="userName" class="form-control" 
+							[ngClass]="{'is-invalid' : chk.submitted && userName.invalid}" autocomplete="OFF"
+							 [(ngModel)]="user.userName" #userName="ngModel" placeholder="Enter user name" tabindex="1"  
+							 autofocus required/>
+							 <div *ngIf="chk.submitted && userName.invalid" class="invalid-feedback">
+								<div *ngIf="userName.errors.required" class="warn-msg">Enter your login username.</div>
+							  </div>
+                        </div>
+                    </div> 
+                    <div class="form-group form-group-sm">
+						<label for="password" class="col-sm-4 control-label" style="font-size:15px;">Password *</label>
+						<div class="col-sm-8">
+							<input type="password" placeholder="Enter password" class="form-control" tabindex="2"
+							name="userpassword" [(ngModel)]="user.password" #userpassword="ngModel"
+							ng-minlength="5" ng-pattern="/^[a-zA-Z0-9]+$/" required  />
+						<!--	[ngClass]="{ 'is-invalid': chk.submitted && password.invalid }" -->
+							<div *ngIf="chk.submitted && userpassword.invalid" class="invalid-feedback">
+								<div *ngIf="userpassword.errors.required" class="warn-msg">Enter your login password.</div>
+							</div>
+						</div> 
+					</div>
+                  
+                <div class="text-center col-md-12">
+                    <div class="btn-group btn-group-md">
+                        <button type="submit" class="btn btn-primary" value="Login" name="Login" tabindex="3">Login</button>
+                    </div>
+                </div>
+            </div>     
+        </div>
+    </form>   
+</div>

@@ -1,0 +1,36 @@
+
+<app-dashboard></app-dashboard>
+<div class="col-md-10 col-md-offset-1" >
+  <div class="jumbotron">
+    <h2> Event Details</h2>
+    <hr>
+    <table class="table table-striped">
+      <thead style="background-color:lightcyan;">
+        <tr>
+          <th>Event Id</th>
+          <th>Event Name</th>
+          <th>Image</th>
+          <th>eventDate</th>
+          <th>etime</th>
+          <th>Price</th>
+          <th>CountryName</th>
+          <th>StateName</th>
+          <th>CityName</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let obj of eventArrList; let $index=index">
+        <td><a routerLink = "/EditEvent">{{obj.eventId}}</a></td>
+        <td>{{obj.eventName}}</td>
+        <td><img class="img-responsive" height="150" width="100" [src]="obj.eventImageUrl" alt="image"></td>
+        <td>{{obj.eventDate}}</td>
+        <td>{{obj.etime}}</td>
+        <td>{{obj.Price}}</td>
+        <td>{{obj.Country}}</td>
+        <td>{{obj.StateName}}</td>
+        <td>{{obj.CityName}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

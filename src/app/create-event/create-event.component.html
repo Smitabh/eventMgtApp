@@ -1,0 +1,71 @@
+<app-dashboard></app-dashboard>
+
+<div class="container">
+    <h2 class="center col-md-6 col-md-offset-3">New Event</h2>
+  <div class="col-md-6 col-md-offset-3">
+    <div class="jumbotron">
+        <div class="form-group">
+            <label for="eventId">Event id:</label>
+            <input type="number" class="form-control" [(ngModel)]="event.eventId" placeholder="Enter event id" tabindex="1"  autofocus required>
+        </div>
+      <div class="form-group">
+        <label for="eventName">Event Name:</label>
+        <input type="text" class="form-control" [(ngModel)]="event.eventName" autofocus  placeholder="Enter event name" tabindex="2" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="edate">Event Date:</label>
+        <input type="date" class="form-control" id="eventDate" name="eventDate"
+             [(ngModel)]="event.eventDate" (ngModelChange)="eventDate = $event"
+             [value]="eventDate | date:'yyyy-MM-dd'" #BirthDate="ngModel" tabindex="3" required><!--eventDate | date:'yyyy-MM-dd'-->
+      </div>
+      <div class="form-group">
+        <label for="etime">Event Time:</label>
+          <input type="time" class="form-control" id="exampleInput" name="input" [(ngModel)]="event.etime" value = {{event.etime}}
+               placeholder="HH:mm " min="08:00:00" max="22:00:00" tabindex="4" required />
+      </div>
+      <h5 *ngIf="hidetime"> value = {{event.etime | date: "HH:mm:ss"}}> </h5>
+      <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" class="form-control" [(ngModel)]="event.Price" placeholder="Enter event price" tabindex="5" required>
+      </div>
+      <div class="form-group">
+        <label for="eventName">Event Location :</label>
+        <select class="form-control" (change)="onChangeCountry($event.target.value)" [(ngModel)] = "event.CountryId" tabindex="6">
+          <option *ngFor="let country of countryInfo; let i = index" [value] = "i">{{country.CountryName}}</option>
+        </select>    
+       </div>
+      <div class="form-group">
+        <div class="col-sm-6 alignlbl" >          
+          <select class="form-control col-sm-6" (change)="onChangeState($event.target.value)"  [(ngModel)] = "event.StateId" tabindex="7">
+            <option *ngIf="stateInfo == ''" value="-1">--Select State--</option>
+            <option *ngFor="let state of stateInfo; let j = index" [value]="j">{{state.StateName}}</option>
+          </select>  
+        </div>
+        <div class="col-sm-6 alignlbl1">  
+          <select class="col-sm-6 form-control"  [(ngModel)] = "event.CityId" tabindex="8">
+            <option *ngIf="cityInfo == ''" value="-1">--Select CIty--</option>
+            <option *ngFor="let city of cityInfo; let k = index" value="{{k}}">{{city}}</option>
+          </select>          
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="eventurl">Online url:</label>
+        <input type="text" class="form-control" [(ngModel)]="event.url" tabindex="9"  placeholder="Enter url" required>
+      </div>
+
+      <div class="form-group">
+        <label for="file">Image:</label>
+        <input type="file" (change)="upload($event.target.files)"  tabindex="10" />
+          Upload Percent: {{percentDone}}% <br />
+          <ng-container class="warn-msg" *ngIf="uploadSuccess">
+            Upload Successful
+          </ng-container> 
+          <img src={{imgname}} alt="">
+      </div>
+      
+
+      <button type="button" class="btn btn-success" (click)="SaveEvent(event)" tabindex="11"> Submit</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+{
+	"eventList":[
+	   {
+		      "eventId":101,
+            "eventName":"Smita",
+            "eventDate":"2020-04-20",
+            "etime":"10:20:AM",
+            "Price":12500,
+            "Country":"India",
+            "StateName":"Maharashtra",
+            "CityName":"Pune",
+            "url": "www.fuseevent.com",
+            "eventImageUrl":"../../assets/img/socialEvent.jpg"
+      
+       }
+    ]
+} 
