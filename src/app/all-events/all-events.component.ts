@@ -9,12 +9,10 @@ import { eventObject } from '../model/event.model';
 })
 export class AllEventsComponent implements OnInit {
 
-  arrData:any= [];
-   eventArrList:any =[];
- // private eventArrList: eventObject [] =[];
-  private eventSingleData: eventObject [] =[];
-    newSingleEventObject:{};
-    updatedEventData :any =[];
+    arrData:any= [];
+    // eventArrList:any[] =[];
+    eventArrList: eventObject [] =[];
+    updatedEventArray :any[] =[];
     oldEventArray :any =[];
 
   constructor(private eventService:EventService) { }
@@ -28,16 +26,20 @@ export class AllEventsComponent implements OnInit {
     subscribe(data =>{
      this.arrData = data;
      this.eventArrList = this.arrData.eventList;
-  
-    this.eventSingleData = this.eventService.getEventSingleList();
-     if (Object.keys(this.eventSingleData).length > 0) {
-      this.eventArrList =  this.eventArrList.push(this.eventSingleData);
-      }
-      console.log('eventArrList:--'+this.eventArrList);
+    
+     let eventSingleData:any ;
+     eventSingleData = this.eventService.getEventSingleList();
 
-     /*this.updatedEventData  = this.eventService.setAllEventData(this.eventArrList);
-     this.eventArrList =  this.updatedEventData;
-     console.log('new Event:---', this.updatedEventData);*/
+     if (Object.keys(eventSingleData).length > 0) {
+          this.eventArrList.push(eventSingleData);
+         console.log('data',this.eventArrList);
+      }
+      else{
+        this.eventArrList = this.arrData.eventList;
+      }
+      
+     // console.log('updatedEventArray:--'+this.updatedEventArray);
+      //console.log('eventArrList--',this.eventArrList);
     
     });
   }
