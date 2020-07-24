@@ -11,7 +11,7 @@ const routes: Routes =([
   { path:'dashboard' ,component: DashboardComponent},
   { path:'createEvent',component:CreateEventComponent},
   { path:'AllEvents',component:AllEventsComponent},
-  { path: 'EditEvent' , component:EditEventComponent}
+  { path:'EditEvent' , component:EditEventComponent}
    // {path:'user',component:UserComponent},
   //{path:'register',component:UserComponent}
 ]);

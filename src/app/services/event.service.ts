@@ -20,6 +20,7 @@ export class EventService {
   APIURL= "http://localhost:4200/assets/event.json";
 
 private eventSingleData: eventObject [] =[];
+private eventAllData:[];
 
  public getEventList(): Observable<eventObject> {
    debugger
@@ -35,10 +36,18 @@ private eventSingleData: eventObject [] =[];
  putEventSingleData(data){
     this.eventSingleData = data;
  }
- getEventAllList(): eventObject[] {
+ getEventSingleList(): eventObject[] {
     return this.eventSingleData;
  }
- 
+ setAllEventData(eventAlldata){
+  this.eventAllData = eventAlldata;
+ }
+ getEventAllDtls(){
+  return this.eventAllData;
+}
+ updateEvent(data) {
+    this.eventSingleData = data;
+ }
  cleartAllList():void{
   this.eventSingleData=[];
  }

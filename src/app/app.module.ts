@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClientJsonpModule} from '@angular/common/http';
-import { FormsModule } from '@angular/forms';//ReactiveFormsModule
+import { FormsModule , ReactiveFormsModule} from '@angular/forms';//ReactiveFormsModule - for edit evant record
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -26,7 +26,8 @@ import { EditEventComponent } from './edit-event/edit-event.component';
     AppRoutingModule,
     HttpClientModule,
     HttpClientJsonpModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

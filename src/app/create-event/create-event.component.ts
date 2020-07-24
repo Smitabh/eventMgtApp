@@ -30,7 +30,7 @@ export class CreateEventComponent implements OnInit {
   Country:string;
   State:string;
   city:string;
- // eventArrList:any =[];
+  eventArrList:any =[];
   stateInfo: any[] = [];
   countryInfo: any[] = [];
   cityInfo: any[] = [];
@@ -51,18 +51,10 @@ export class CreateEventComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.urlPath = this.router.routerState.snapshot.url;
-    // if(this.urlPath == '/AllEvents'){
-    //   this.showtbl = true;
-    //   this.isNewEvent = false;   
-    //   this.getEventInfo(); 
-    // }
-    // else{
-    //   this.showtbl = false;
-    //   this.isNewEvent = true ;
-    //   this.getCountries();
-    // }
     this.getCountries();
+    
+    this.eventArrList = this.eventService.getEventAllDtls();
+    console.log('create data:', this.eventArrList);
   }
   
   getCountries(){
@@ -94,7 +86,13 @@ export class CreateEventComponent implements OnInit {
     this.State = this.stateInfo[StateId].StateName;
     let cityId = data.CityId;
     this.city =  this.cityInfo[cityId];
-    let img =  this.eventImgName;
+    let img;
+    if(this.eventImgName){
+      img = this.eventImgName;
+    }
+    else {
+      img = '';
+    }
     
     let eventObj= { eventId: data.eventId, 
                      eventName: data.eventName, eventDate: data.eventDate,
@@ -105,6 +103,7 @@ export class CreateEventComponent implements OnInit {
      } 
    
    this.eventService.putEventSingleData(eventObj);
+   
    this.router.navigate(['/AllEvents']);
    this.event.eventId ='';
    this.event.eventName ='';
