@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EventService } from '../services/event.service';
-import { eventObject } from '../model/event.model';
+import { eventObject, EventList } from '../model/event.model';
 
 @Component({
   selector: 'app-all-events',
@@ -9,43 +9,28 @@ import { eventObject } from '../model/event.model';
 })
 export class AllEventsComponent implements OnInit {
 
-    arrData:any= [];
-    // eventArrList:any[] =[];
-    eventArrList: eventObject [] =[];
-    updatedEventArray :any[] =[];
-    oldEventArray :any =[];
+  arrData: any = [];
+  eventArrList: EventList[] = [];
 
-  constructor(private eventService:EventService) { }
+  constructor(private eventService: EventService) { }
 
-  ngOnInit() {
-    this.getEventInfo();
-    this.oldEventArray = this.eventService.getEventAllDtls();
+ async ngOnInit() {
+    // console.log('length====>',this.eventService.getEventSingleList().length)
+    if (this.eventService.getEventSingleList().length > 0) {
+      this.eventArrList = await this.eventService.getEventSingleList();
+    } else {
+      this.getEventInfo();
+    }
   }
-  getEventInfo(){
+  getEventInfo() {
     this.eventService.getEventList().
-    subscribe(data =>{
-     this.arrData = data;
-     this.eventArrList = this.arrData.eventList;
+      subscribe(data => {
+        this.eventArrList = data.eventList;
     
-     let eventSingleData:any ;
-     eventSingleData = this.eventService.getEventSingleList();
-
-     if (Object.keys(eventSingleData).length > 0) {
-          this.eventArrList.push(eventSingleData);
-         console.log('data',this.eventArrList);
-      }
-      else{
-        this.eventArrList = this.arrData.eventList;
-      }
-      
-     // console.log('updatedEventArray:--'+this.updatedEventArray);
-      //console.log('eventArrList--',this.eventArrList);
-    
-    });
-  }
-  
-  ngDestroy(){
-   // this.eventService.cleartAllList();
+      });
   }
 
+  ngDestroy() {
+    // this.eventService.cleartAllList();
+  }
 }
