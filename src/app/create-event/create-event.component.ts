@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CountriesService } from '../services/countries.service';
-import { HttpClient, HttpResponse, HttpEventType} from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { EventService } from '../services/event.service';
-declare var require: any ;
+import { eventObject, EventList } from '../model/event.model';
+declare var require: any;
 
 @Component({
   selector: 'app-create-event',
@@ -13,131 +14,143 @@ declare var require: any ;
   providers: [DatePipe]
 })
 export class CreateEventComponent implements OnInit {
-  eventList:any = [];
+  eventList: any = [];
   event = {
-    'eventId':'',
-    'eventName':'',
-    'eventDate':'',
-    'etime':'',
-    'Price':'',
-    'Country':'',
-    'StateId':'',
-    'CityId':'',
-    'creationDate':'',
-    'url':'',
-    'eventImageUrl':''
+    'eventId': '',
+    'eventName': '',
+    'eventDate': '',
+    'etime': '',
+    'Price': '',
+    'Country': '',
+    'StateId': '',
+    'CityId': '',
+    'creationDate': '',
+    'url': '',
+    'eventImageUrl': ''
   }
-  Country:string;
-  State:string;
-  city:string;
-  eventArrList:any =[];
+  Country: string;
+  State: string;
+  city: string;
+  eventArrList: any = [];
   stateInfo: any[] = [];
   countryInfo: any[] = [];
   cityInfo: any[] = [];
   todaysDate = new Date();
   eventDate = '';
-  etime='';
+  etime = '';
   percentDone: number;
   uploadSuccess: boolean;
   eventImgName;
   imgname;
-  urlPath:string;
-  path:any;
-  // showtbl:boolean=false;
-  // isNewEvent:boolean= true;
-  constructor(private country:CountriesService,  private eventService:EventService , private http: HttpClient, private datePipe: DatePipe, private router : Router) { 
+  urlPath: string;
+  path: any;
+ 
+  constructor(private country: CountriesService, private eventService: EventService, private http: HttpClient, private datePipe: DatePipe, private router: Router) {
     this.eventDate = this.datePipe.transform(this.todaysDate, 'MM/dd/yyyy');
-    this.etime = this.datePipe.transform(this.todaysDate, 'MM/dd/yyyy hh:mm a'); 
+    this.etime = this.datePipe.transform(this.todaysDate, 'MM/dd/yyyy hh:mm a');
   }
 
   ngOnInit() {
     this.getCountries();
-    
-    this.eventArrList = this.eventService.getEventAllDtls();
-    console.log('create data:', this.eventArrList);
+    this.getEventInfo();  
   }
-  
-  getCountries(){
+
+  getCountries() {
     this.country.allCountries().
-    subscribe(
-      data2 => {
-        this.countryInfo=data2.Countries;
-       // console.log('Data:', this.countryInfo);
-      },
-      err => console.log(err),
-      () => console.log('complete')
-    )
+      subscribe(
+        data2 => {
+          this.countryInfo = data2.Countries;
+          // console.log('Data:', this.countryInfo);
+        },
+        err => console.log(err),
+        () => console.log('complete')
+      )
   }
-  
+
+  getEventInfo() {
+    this.eventService.getEventList().
+      subscribe(data => {
+        this.eventArrList = data.eventList;
+        if (this.eventService.getEventSingleList().length == 0) 
+        this.eventService.putEventSingleData(this.eventArrList[0]);
+      });
+  }
+
+
   onChangeCountry(countryValue) {
-    this.stateInfo=this.countryInfo[countryValue].States;
-    this.cityInfo=this.stateInfo[0].Cities;
-   // console.log(this.cityInfo);
+    this.stateInfo = this.countryInfo[countryValue].States;
+    this.cityInfo = this.stateInfo[0].Cities;
+    // console.log(this.cityInfo);
   }
-  
+
   onChangeState(stateValue) {
-    this.cityInfo=this.stateInfo[stateValue].Cities;
+    this.cityInfo = this.stateInfo[stateValue].Cities;
     //console.log(this.cityInfo);
   }
-  SaveEvent(data):any{ 
+  SaveEvent(data): any {
     let cntryId = data.CountryId;
     this.Country = this.countryInfo[cntryId].CountryName;
     let StateId = data.StateId;
     this.State = this.stateInfo[StateId].StateName;
     let cityId = data.CityId;
-    this.city =  this.cityInfo[cityId];
+    this.city = this.cityInfo[cityId];
     let img;
-    if(this.eventImgName){
+    if (this.eventImgName) {
       img = this.eventImgName;
     }
     else {
       img = '';
     }
-    
-    let eventObj= { eventId: data.eventId, 
-                     eventName: data.eventName, eventDate: data.eventDate,
-                     etime:data.etime ,Price:data.Price,
-                     Country:this.Country,StateName:this.State,
-                     CityName:this.city,url:data.url,
-                     eventImageUrl:img
-     } 
-   
-   this.eventService.putEventSingleData(eventObj);
-   
-   this.router.navigate(['/AllEvents']);
-   this.event.eventId ='';
-   this.event.eventName ='';
-   this.event.eventDate ='';
-   this.event.etime ='';
-   this.event.Price ='';
-   this.event.Country ='';
-   this.event.StateId ='';
-   this.event.CityId = '';
-   this.event.url = '';
-  }
-   
-    upload(files: File[]){
-      //pick from one of the 4 styles of file uploads below
-      this.uploadAndProgress(files);
+    let eventListInfo: EventList[] = [];
+    let eventData: EventList = {
+      eventId: data.eventId,
+      eventName: data.eventName,
+      eventDate: data.eventDate,
+      etime: data.etime,
+      Price: data.Price,
+      Country: this.Country,
+      StateName: this.State,
+      CityName: this.city,
+      url: data.url,
+      eventImageUrl: img
     }
-   
-    uploadAndProgress(files: File[]){
-     // console.log(files)
-      this.eventImgName = files[0].name;
-     //console.log(this.eventImgName, files)
-      var formData = new FormData();
-      Array.from(files).forEach(f => formData.append('file',f))
-      
-      this.http.post('https://file.io', formData, {reportProgress: true, observe: 'events'})
-        .subscribe(event => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.percentDone = Math.round(100 * event.loaded / event.total);
-          } else if (event instanceof HttpResponse) {
-            this.uploadSuccess = true;
-             //this.imgname= require("../../assets/img/"+this.eventImgName);
-            // console.log(this.imgname);
-          }
+   //Save Event data
+    this.eventService.putEventSingleData(eventData);
+
+    this.router.navigate(['/AllEvents']);
+    //  this.event.eventId ='';
+    //  this.event.eventName ='';
+    //  this.event.eventDate ='';
+    //  this.event.etime ='';
+    //  this.event.Price ='';
+    //  this.event.Country ='';
+    //  this.event.StateId ='';
+    //  this.event.CityId = '';
+    //  this.event.url = '';
+  }
+
+  upload(files: File[]) {
+    //pick from one of the 4 styles of file uploads below
+    this.uploadAndProgress(files);
+  }
+
+  uploadAndProgress(files: File[]) {
+    // console.log(files)
+    this.eventImgName = files[0].name;
+    //console.log(this.eventImgName, files)
+    var formData = new FormData();
+    Array.from(files).forEach(f => formData.append('file', f))
+
+    this.http.post('https://file.io', formData, { reportProgress: true, observe: 'events' })
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.percentDone = Math.round(100 * event.loaded / event.total);
+        } else if (event instanceof HttpResponse) {
+          this.uploadSuccess = true;
+          //this.imgname= require("../../assets/img/"+this.eventImgName);
+          // console.log(this.imgname);
+        }
       });
-    } 
-  
+  }
+
 }
